@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import profileImg from "@/assets/jean_albaladejo.jpg";
 import { achievements } from "@/data/achievements";
 import { getTechnicalSkills, getHumanSkills } from "@/data/skills";
@@ -138,6 +138,14 @@ export default function Navbar() {
         : "text-muted-foreground hover:text-foreground hover:bg-muted"
     }`;
 
+  const disabledClass =
+    "block px-4 py-2 text-sm text-muted-foreground opacity-60 cursor-not-allowed select-none";
+
+  const mobileDisabledClass =
+    "block px-3 py-2 rounded-md text-sm text-muted-foreground opacity-60 cursor-not-allowed select-none";
+
+  const isAccueil = (path: string) => path === "/";
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -166,13 +174,15 @@ export default function Navbar() {
           {mainNavItems.map((item) =>
             item.children ? (
               <li key={item.path} className="relative">
+                {/* Only allow Accueil to toggle/open dropdown */}
                 <button
-                  onClick={() => toggleDropdown(item.path)}
+                  onClick={() => (isAccueil(item.path) ? toggleDropdown(item.path) : undefined)}
                   className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                     isActiveParent(item)
                       ? "text-terminal"
                       : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  } ${isAccueil(item.path) ? "" : "opacity-60 cursor-not-allowed"}`}
+                  aria-disabled={!isAccueil(item.path)}
                 >
                   {item.label}
                   <ChevronDown
@@ -190,7 +200,7 @@ export default function Navbar() {
                   />
                 )}
                 <AnimatePresence>
-                  {openDropdown === item.path && (
+                  {openDropdown === item.path && isAccueil(item.path) && (
                     <motion.div
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -198,85 +208,41 @@ export default function Navbar() {
                       transition={{ duration: 0.15 }}
                       className="absolute top-full right-0 mt-1 min-w-[240px] max-h-[75vh] overflow-y-auto glass border rounded-md shadow-lg z-50"
                     >
-                      {item.selfLabel && item.path !== "/" && (
-                        <>
-                          <Link to={item.path} className={linkClass(item.path)}>
-                            {item.selfLabel}
-                          </Link>
-                          <div className="h-px bg-border mx-2" />
-                        </>
-                      )}
-
-                      {item.children.map((child) =>
-                        child.children ? (
-                          <div key={child.path}>
-                            <button
-                              onClick={() => toggleExpanded(child.path)}
-                              className="flex items-center justify-between w-full px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                            >
-                              {child.label}
-                              <ChevronDown
-                                size={12}
-                                className={`transition-transform duration-200 ${
-                                  expandedSubs.has(child.path) ? "rotate-180" : ""
-                                }`}
-                              />
-                            </button>
-                            <AnimatePresence>
-                              {expandedSubs.has(child.path) && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.15 }}
-                                  className="overflow-hidden bg-background/30"
-                                >
-                                  {child.children.map((sub) => (
-                                    <Link
-                                      key={sub.path}
-                                      to={sub.path}
-                                      className={`block pl-8 pr-4 py-1.5 text-sm transition-colors ${
-                                        location.pathname === sub.path
-                                          ? "text-terminal bg-terminal/10"
-                                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                                      }`}
-                                    >
-                                      {sub.label}
-                                    </Link>
-                                  ))}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        ) : (
-                          <Link key={child.path} to={child.path} className={linkClass(child.path)}>
-                            {child.label}
-                          </Link>
-                        )
-                      )}
+                      {/* Disable all submenu links (Présentation/Parcours) */}
+                      {item.children.map((child) => (
+                        <span key={child.path} className={disabledClass} aria-disabled="true">
+                          {child.label}
+                        </span>
+                      ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
               </li>
             ) : (
-              <li key={item.path}>
-                <Link
-                  to={item.path}
-                  className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    location.pathname === item.path
-                      ? "text-terminal"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {item.label}
-                  {location.pathname === item.path && (
-                    <motion.div
-                      layoutId="nav-indicator"
-                      className="absolute bottom-0 left-1 right-1 h-0.5 bg-terminal rounded-full"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </Link>
+              <li key={item.path}>  
+                {isAccueil(item.path) ? (
+                  <Link
+                    to={item.path}
+                    className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                      location.pathname === item.path
+                        ? "text-terminal"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                    {location.pathname === item.path && (
+                      <motion.div
+                        layoutId="nav-indicator"
+                        className="absolute bottom-0 left-1 right-1 h-0.5 bg-terminal rounded-full"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                ) : (
+                  <span className="relative px-3 py-2 text-sm font-medium rounded-md text-muted-foreground opacity-60 cursor-not-allowed select-none">
+                    {item.label}
+                  </span>
+                )}
               </li>
             )
           )}
@@ -305,12 +271,13 @@ export default function Navbar() {
                 item.children ? (
                   <li key={item.path}>
                     <button
-                      onClick={() => toggleMobile(item.path)}
+                      onClick={() => (isAccueil(item.path) ? toggleMobile(item.path) : undefined)}
                       className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         isActiveParent(item)
                           ? "text-terminal bg-terminal/10"
                           : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                      }`}
+                      } ${isAccueil(item.path) ? "" : "opacity-60 cursor-not-allowed"}`}
+                      aria-disabled={!isAccueil(item.path)}
                     >
                       {item.label}
                       <ChevronDown
@@ -321,78 +288,42 @@ export default function Navbar() {
                       />
                     </button>
                     <AnimatePresence>
-                      {mobileOpen.has(item.path) && (
+                      {mobileOpen.has(item.path) && isAccueil(item.path) && (
                         <motion.ul
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           className="pl-4 overflow-hidden"
                         >
-                          {item.selfLabel && item.path !== "/" && (
-                            <li>
-                              <Link to={item.path} className={mobileLinkClass(item.path)}>
-                                {item.selfLabel}
-                              </Link>
+                          {item.children.map((child) => (
+                            <li key={child.path}>
+                              <span className={mobileDisabledClass} aria-disabled="true">
+                                {child.label}
+                              </span>
                             </li>
-                          )}
-                          {item.children.map((child) =>
-                            child.children ? (
-                              <li key={child.path}>
-                                <button
-                                  onClick={() => toggleMobile(child.path)}
-                                  className="flex items-center justify-between w-full px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                                >
-                                  {child.label}
-                                  <ChevronDown
-                                    size={12}
-                                    className={`transition-transform duration-200 ${
-                                      mobileOpen.has(child.path) ? "rotate-180" : ""
-                                    }`}
-                                  />
-                                </button>
-                                <AnimatePresence>
-                                  {mobileOpen.has(child.path) && (
-                                    <motion.ul
-                                      initial={{ opacity: 0, height: 0 }}
-                                      animate={{ opacity: 1, height: "auto" }}
-                                      exit={{ opacity: 0, height: 0 }}
-                                      className="pl-4 overflow-hidden"
-                                    >
-                                      {child.children.map((sub) => (
-                                        <li key={sub.path}>
-                                          <Link to={sub.path} className={mobileLinkClass(sub.path)}>
-                                            {sub.label}
-                                          </Link>
-                                        </li>
-                                      ))}
-                                    </motion.ul>
-                                  )}
-                                </AnimatePresence>
-                              </li>
-                            ) : (
-                              <li key={child.path}>
-                                <Link to={child.path} className={mobileLinkClass(child.path)}>
-                                  {child.label}
-                                </Link>
-                              </li>
-                            )
-                          )}
+                          ))}
                         </motion.ul>
                       )}
                     </AnimatePresence>
                   </li>
                 ) : (
                   <li key={item.path}>
-                    <Link
-                      to={item.path}
-                      className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                        location.pathname === item.path
-                          ? "text-terminal bg-terminal/10"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
+                    {isAccueil(item.path) ? (
+                      <Link
+                        to={item.path}
+                        className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                          location.pathname === item.path
+                            ? "text-terminal bg-terminal/10"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <span className={mobileDisabledClass} aria-disabled="true">
+                        {item.label}
+                      </span>
+                    )}
                   </li>
                 )
               )}
