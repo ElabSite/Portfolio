@@ -7,8 +7,6 @@ import GlitchText from "@/components/GlitchText";
 import TypeWriter from "@/components/TypeWriter";
 import HolographicCard from "@/components/HolographicCard";
 import profileImg from "@/assets/profile-placeholder.jpg";
-import { skills } from "@/data/skills";
-import { achievements } from "@/data/achievements";
 
 const terminalStrings = [
   "deploying excellence...",
@@ -68,8 +66,7 @@ const Index = () => {
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 text-foreground leading-tight">
-              Jean{" "}
-              <GlitchText text="Albaladejo" className="text-gradient glow-text" />
+              Jean <GlitchText text="Albaladejo" className="text-gradient glow-text" />
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-2 font-body">
@@ -79,8 +76,7 @@ const Index = () => {
             {/* Terminal line */}
             <div className="font-display text-sm text-muted-foreground mt-8 flex items-center justify-center gap-2 bg-card/50 rounded-lg px-5 py-3 border terminal-border max-w-md mx-auto">
               <Terminal size={14} className="text-terminal shrink-0" />
-              <span className="text-terminal">$</span>{" "}
-              <TypeWriter strings={terminalStrings} />
+              <span className="text-terminal">$</span> <TypeWriter strings={terminalStrings} />
             </div>
           </motion.div>
 
@@ -90,20 +86,22 @@ const Index = () => {
             transition={{ delay: 0.8, duration: 0.5 }}
             className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link
-              to="/skills"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-terminal text-primary-foreground font-display text-sm font-semibold hover:shadow-[0_0_30px_hsl(175_70%_50%/0.3)] transition-all duration-300"
+            <button
+              type="button"
+              aria-disabled="true"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-terminal text-primary-foreground font-display text-sm font-semibold opacity-60 cursor-not-allowed select-none hover:shadow-none transition-all duration-300"
             >
               Découvrir mes compétences
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              to="/achievements"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border terminal-border text-foreground font-display text-sm font-semibold hover:bg-terminal/10 hover:border-terminal/40 transition-all duration-300"
+              <ArrowRight size={16} className="transition-transform" />
+            </button>
+            <button
+              type="button"
+              aria-disabled="true"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border terminal-border text-foreground font-display text-sm font-semibold opacity-60 cursor-not-allowed select-none hover:bg-transparent hover:border-terminal transition-all duration-300"
             >
               Voir mes réalisations
-              <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-            </Link>
+              <ArrowRight size={16} className="opacity-0 transition-all" />
+            </button>
           </motion.div>
 
           <motion.div
@@ -134,24 +132,21 @@ const Index = () => {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {[
             {
-              icon: <Cpu size={22} className="text-terminal" />,
+              icon: <Cpu size={22} className="text-terminal" />, 
               title: "Compétences techniques",
               desc: "CI/CD, Infrastructure as Code, Conteneurisation, Monitoring, Cloud Computing",
-              link: "/skills",
               delay: 0,
             },
             {
-              icon: <Users size={22} className="text-accent" />,
+              icon: <Users size={22} className="text-accent" />, 
               title: "Compétences humaines",
               desc: "Communication, Leadership, Résolution de problèmes, Adaptabilité, Esprit d'équipe",
-              link: "/skills",
               delay: 0.1,
             },
             {
-              icon: <Rocket size={22} className="text-terminal" />,
+              icon: <Rocket size={22} className="text-terminal" />, 
               title: "Mon parcours",
               desc: "Expériences professionnelles, formations et certifications qui ont forgé mon expertise.",
-              link: "/career",
               delay: 0.2,
             },
           ].map((card, i) => (
@@ -169,14 +164,16 @@ const Index = () => {
                 <h3 className="font-display text-lg font-semibold mb-2 text-foreground">
                   {card.title}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4 font-body">{card.desc}</p>
-                <Link
-                  to={card.link}
-                  className="group inline-flex items-center gap-1 text-terminal text-sm font-display hover:underline"
+                <p className="text-sm text-muted-foreground mb-4 font-body">
+                  {card.desc}
+                </p>
+                <span
+                  aria-disabled="true"
+                  className="group inline-flex items-center gap-1 text-terminal text-sm font-display opacity-60 cursor-not-allowed select-none"
                 >
                   Explorer
-                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
+                  <ArrowRight size={14} className="transition-transform" />
+                </span>
               </HolographicCard>
             </motion.div>
           ))}
