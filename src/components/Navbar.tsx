@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import profileImg from "@/assets/jean_albaladejo.jpg";
 import { achievements } from "@/data/achievements";
 import { getTechnicalSkills, getHumanSkills } from "@/data/skills";
@@ -219,7 +219,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </li>
             ) : (
-              <li key={item.path}>  
+              <li key={item.path}>
                 {isAccueil(item.path) ? (
                   <Link
                     to={item.path}
