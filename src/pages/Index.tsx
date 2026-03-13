@@ -6,7 +6,7 @@ import CyberGrid from "@/components/CyberGrid";
 import GlitchText from "@/components/GlitchText";
 import TypeWriter from "@/components/TypeWriter";
 import HolographicCard from "@/components/HolographicCard";
-import profileImg from "@/assets/profile-placeholder.jpg";
+import profileImg from "@/assets/jean_albaladejo.jpg";
 
 const terminalStrings = [
   "deploying excellence...",
