@@ -9,11 +9,11 @@ import HolographicCard from "@/components/HolographicCard";
 import profileImg from "@/assets/jean_albaladejo.jpg";
 
 const terminalStrings = [
-  "deploying excellence...",
-  "building infrastructure...",
-  "automating everything...",
-  "shipping with confidence...",
-  "monitoring at scale...",
+  "Déploiement automatisé...",
+  "Mise en place de monitoring...",
+  "Infrastructure scalable...",
+  "Développpement Python...",
+  "Provisionnement Cloud...",
 ];
 
 const Index = () => {
