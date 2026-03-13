@@ -70,7 +70,7 @@ const Index = () => {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-2 font-body">
-              Spécialiste DevOps — Construire des ponts entre le développement et les opérations
+              Spécialiste DevOps — Industrialiser le cycle de vie des applications
             </p>
 
             {/* Terminal line */}
@@ -140,7 +140,7 @@ const Index = () => {
             {
               icon: <Users size={22} className="text-accent" />, 
               title: "Compétences humaines",
-              desc: "Communication, Leadership, Résolution de problèmes, Adaptabilité, Esprit d'équipe",
+              desc: "Communication, Gestion de projet, Résolution de problèmes, Adaptabilité, Esprit d'équipe",
               delay: 0.1,
             },
             {
