@@ -2,15 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-//import About from "./pages/About";
-//import Skills from "./pages/Skills";
-//import SkillDetail from "./pages/SkillDetail";
-//import Achievements from "./pages/Achievements";
-//import AchievementDetail from "./pages/AchievementDetail";
-//import Career from "./pages/Career";
-//import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,19 +13,10 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/*<Route path="/about" element={<About />} />
-          <Route path="/skills" element={<Skills />} />
-          <Route path="/skills/:id" element={<SkillDetail />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/achievements/:id" element={<AchievementDetail />} />
-          <Route path="/career" element={<Career />} />
-          <Route path="/contact" element={<Contact />} />*/}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </TooltipProvider>
   </QueryClientProvider>
 );
