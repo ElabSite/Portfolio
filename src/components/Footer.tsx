@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Terminal, Github, Linkedin, Mail } from "lucide-react";
-import profileImg from "@/assets/profile-placeholder.jpg";
+import profileImg from "@/assets/jean_albaladejo.jpg";
 
 export default function Footer() {
   return (
